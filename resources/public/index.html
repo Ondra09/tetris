@@ -1,0 +1,50 @@
+<html>
+<head>
+  <title>Clotris!</title>
+  <style>
+html, body {
+    padding: 0px;
+    margin: 0px;
+}
+
+canvas {
+    padding: 50px 0px 0px 0px;
+    width: 20%;
+    height: 75%;
+    margin-left: auto;
+    margin-right: auto;
+    border: 3px solid lightsteelblue;
+}
+
+div {
+    text-align: center;
+}
+
+#audio-button {
+  font-size: 20px;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+#next-tetris {
+    font-size: 20px;
+    color: lightcoral;
+}
+  </style>
+</head>
+
+<body>
+  <div>
+    <canvas></canvas>
+    </div>
+  <audio id="audio" loop="loop"></audio>
+  <button id="audio-button">Toggle Music</button>
+  <div>
+    Score: 0
+    <br/>
+    Next item: <span id="next-tetris">0fhf</span>
+  </div>
+  <script src="main.js"></script>
+</body>
+</html>
