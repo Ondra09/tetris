@@ -9,6 +9,7 @@
             #?(:clj  [play-cljc.macros-java :refer [gl math]]
                :cljs [play-cljc.macros-js :refer-macros [gl math]])))
 
+;; here is a lot of unused states TODO: cleanup
 (defonce *state (atom {:last-action-time 0
                        :last-auto-move 0
                        :mouse-x 0
@@ -16,8 +17,6 @@
                        :pressed-keys #{}
                        :x-velocity 0
                        :y-velocity 0
-                       :player-x 0
-                       :player-y 0
                        :active-tile (tmove/spawn-new-tetro)
                        :can-jump? false
                        :direction :right
@@ -44,9 +43,7 @@
 
 
 (defn load-map [game state]
-  (tiles/load-simple-map game state)
-  ;;(tiles/create-graphics game state)
-  )
+  (tiles/load-simple-map game state))
 
 (defn init-game-board [board]
   "testing purposes"
@@ -79,16 +76,9 @@
                                entity (assoc entity :width width :height height)
                                ]
                            ;; add it to the state
-                           ;; (print "chrochor")
-                           ;; (print "entity-bare: " entity-bare)
                            (swap! *state update :basic-tile-loaded assoc k entity-bare)
                            (swap! *state update :player-images assoc k entity)
-                           ;; TODO: !! this should not be here, but is called async so for
-                           ;; one image kinda works. We do not want to reload for every image loaded
-                           ;;(print "qvaqva: " (-> @*state :basic-tile-loaded))
                            (swap! *state update :basic-tile-complete assoc :tris (load-map game @*state))
-                           #_(swap! *state update :basic-tile-complete assoc :game-tiles (tiles/generate-tiles @*state (-> @*state
-                        :basic-tile-complete :tris)))
                            ))))
 
     )
@@ -102,8 +92,6 @@
 
 (defn run [game]
   (let [{:keys [pressed-keys
-                player-x
-                player-y
                 camera-x
                 camera-y
                 direction
@@ -118,22 +106,9 @@
     (c/render game (update screen-entity :viewport
                            assoc :width game-width :height game-height))
 
-    (when-let [player (get player-images player-image-key)]
-      (c/render game
-                (->  player
-                    (t/project game-width game-height)
-                    ;;(t/translate (+ 0 100) 200)
-                    (t/scale 30 30)
-                    (t/camera camera)
-                    )))
-
     ;; render game board
-    (when-let [ tile (-> @*state :basic-tile-complete :tris)
-               ;; TODO: remove entities completelty
-               ;; entities (-> @*state :basic-tile-complete :game-tiles)
-               ]
+    (when-let [tile (-> @*state :basic-tile-complete :tris)]
       (c/render game
-                ;; (->  tile ;; (tiles/update-tiles @*state entities)
                 (-> (tiles/update-color-buffer-instances @*state)
                     (t/project game-width game-height)
                     (t/scale 30 30)
@@ -141,10 +116,8 @@
       (swap! *state
            (fn [state]
              (->> state
-                  ;; (move/move-camera game)
                   (move/move-tile game)
-                  (move/move-tile-on-tick game)
-                  ))))
+                  (move/move-tile-on-tick game)))))
     )
 
   ;; return the game map
