@@ -56,7 +56,7 @@
   "bakes tetronimo into board"
   (put-tetromino array row column shape rot))
 
-(defn spawn-new-tetro []
+(defn spawn-new-tetro [& [old-tetro]]
   {:row 1 :column 5 :shape (rand-nth (keys tetrominoes)) :rot 0})
 
 

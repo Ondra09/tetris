@@ -61,8 +61,7 @@
 (defn try-place-new-tile [state]
   "Try to place new tetris tile. In case of fail we have game over."
   (let
-      [
-       state-new-tetro (update-in state [:active-tile] tmove/spawn-new-tetro)]
+      [state-new-tetro (update-in state [:active-tile] tmove/spawn-new-tetro)]
     (if (can-move state-new-tetro)
       state-new-tetro
       ;; this is game over; return old state
