@@ -1,7 +1,7 @@
 # Tetris
 Learning projec to learn Clojure & play-cljc
 
-Template taken directly from play-cljc examplse:
+Template taken directly from play-cljc examples:
 
 ## play-cljc
 
